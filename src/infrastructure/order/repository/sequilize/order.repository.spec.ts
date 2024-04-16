@@ -102,10 +102,6 @@ describe("Order repository test", () => {
       2
     )
 
-    const order = new Order("123", "123", [orderItem])
-    const orderRepository = new OrderRepository();
-    await orderRepository.create(order);
-
     const product2 = new Product("345", "Product 2", 20);
     await productRepository.create(product2);
 
@@ -113,19 +109,30 @@ describe("Order repository test", () => {
       "2",
       product2.name,
       product2.price,
-      product.id,
+      product2.id,
       3
     );
 
+    const order = new Order("222", "123", [orderItem, orderItem2])
+    const orderRepository = new OrderRepository();
+    await orderRepository.create(order);
+
+    
     order.addItem(orderItem2);
 
+
     await orderRepository.update(order);
+
+
     const orderModel = await OrderModel.findOne({ 
-      where: { id: order.id },
+      where: { id: '222' },
       include: ["items"]});
+
+
+    console.log("🚀 VOA ~ it ~ orderModel:", orderModel.toJSON())
     
     expect(orderModel.toJSON()).toStrictEqual({
-      id: "123",
+      id: "222",
       customer_id: "123",
       total: order.total(),
       items: [
@@ -134,7 +141,7 @@ describe("Order repository test", () => {
           name: orderItem.name,
           price: orderItem.price,
           quantity: orderItem.quantity,
-          order_id: "123",
+          order_id: "222",
           product_id: "123",
         },
         {
@@ -142,11 +149,12 @@ describe("Order repository test", () => {
           name: orderItem2.name,
           price: orderItem2.price,
           quantity: orderItem2.quantity,
-          order_id: "123",
+          order_id: "222",
           product_id: "345",
         },
       ],
     })
 
   })
+
 });
