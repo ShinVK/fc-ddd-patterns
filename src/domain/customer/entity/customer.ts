@@ -1,3 +1,6 @@
+import EventDispatcher from "../../@shared/event/event-dispatcher";
+import CustomerChangedAddress from "../event/customer-changed-address";
+import SendLogWhenCustomerChangedAddres from "../event/handler/send-log-when-customer-changed-addres";
 import Address from "../value-object/address";
 
 export default class Customer {
@@ -45,6 +48,12 @@ export default class Customer {
   
   changeAddress(address: Address) {
     this._address = address;
+    const eventDispatcher = new EventDispatcher();
+    const eventHandler = new SendLogWhenCustomerChangedAddres();
+    eventDispatcher.register("CustomerChangedAddress", eventHandler);
+    const customerCreatedEvent = new CustomerChangedAddress({ id: this._id, address, name: this._name})
+    eventDispatcher.notify(customerCreatedEvent)
+    
   }
 
   isActive(): boolean {

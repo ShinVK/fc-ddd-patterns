@@ -8,7 +8,4 @@ export default class SendLogWhenCustomerIsCreatedHandler
     console.log("Esse é o primeiro console.log do evento: CustomerCreated"); 
   }
 
-  handler2(event: CustomerCreatedEvent): void {
-    console.log("Esse é o segundo console.log do evento: CustomerCreated")
-  }
 }
